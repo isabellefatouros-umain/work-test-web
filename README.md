@@ -67,4 +67,4 @@ Don't hesistate to contact us if you have any questions! Please send an email to
 - herbert.cuba@umain.com
 
 ### Norway
-- aswin@umain.no
+- aswin.nalliah@umain.com
