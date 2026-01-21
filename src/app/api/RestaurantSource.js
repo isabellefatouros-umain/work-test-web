@@ -15,3 +15,18 @@ export function getDataFromApi( apiEndpoint){
 
     return fetch(`${ API_URL }`+`${ apiEndpoint }`).then(gotResponseACB).then(getResultsACB);
 };
+
+/*
+one restaurant object structure:
+{
+  "id": "string",
+  "name": "string",
+  "rating": "number",
+  "filter_ids": [
+    "string"
+  ],
+  "image_url": "string",
+  "delivery_time_minutes": "number",
+  "price_range_id": "string"
+}
+*/

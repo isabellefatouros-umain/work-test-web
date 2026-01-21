@@ -28,14 +28,14 @@ export const SidebarFilter = observer(
 
         return (
         <div className="debug">
-            <SidebarFilterView dishTypeOptions = {["starter", "main course", "dessert"]} 
+            <SidebarFilterView
                             onTopFilterChanged = {onTopFilterChangedACB}
                             onSideFilterChanged = {onSideFilterChangedACB}
                             onSearchClick = {onSearchClickACB}/>
-            {(props.model.searchResultsPromiseState && props.model.searchResultsPromiseState.data && <SearchResultsView searchResults = {props.model.searchResultsPromiseState.data}
+            {(props.model.filterResultsPromiseState && props.model.filterResultsPromiseState.data && <SearchResultsView searchResults = {props.model.filterResultsPromiseState.data}
                                                                                                                         currentDishEffect ={onSearchResultChosenACB}/>) || 
-            <SuspenseView promise = {props.model.searchResultsPromiseState.promise}
-                        error = {props.model.searchResultsPromiseState.error}/>}
+            <SuspenseView promise = {props.model.filterResultsPromiseState.promise}
+                        error = {props.model.filterResultsPromiseState.error}/>}
         </div>
         );
     }

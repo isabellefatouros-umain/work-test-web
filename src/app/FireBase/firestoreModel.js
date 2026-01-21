@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc, getDoc, deleteField } from "firebase/firestore";
 import { firebaseConfig } from "./firebaseConfig.js";
 import { getAuth } from "firebase/auth";
+import { getDataFromApi } from "../api/restaurantSource.js";
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
@@ -9,58 +10,71 @@ const db = getFirestore(app);
 const COLLECTION = "restaurants";
 
 export async function connectToPersistence(reactiveModel, watcherFunction) {
-    function handleSnapShotACB(snapshot) {
+    
+    async function loadInitialData() {
+        console.log("Loading initial data...");
+
+        try {
+            const restaurants = await getDataFromApi("/restaurants");
+            console.log("Loaded restaurants:", restaurants);
+            reactiveModel.restaurantsShown = restaurants || [];
+            reactiveModel.filtersApplied = [];
+            reactiveModel.setReady(true);
+            console.log("Model ready set to true");
+        } catch (error) {
+            console.error("Error loading restaurants:", error);
+            reactiveModel.restaurantsShown = [];
+            reactiveModel.filtersApplied = [];
+            reactiveModel.setReady(true);
+        }
+    }
+
+    async function handleSnapShotACB(snapshot) {
         const data = snapshot.data();
         if (!data) {
-            reactiveModel.restaurantsShown = getDataFromApi("/restaurants"); // sätt in fler värden
-            reactiveModel.filtersApplied = [];
-
-
-
+            await loadInitialData();
         } else {
-            reactiveModel.restaurantsShown = data.restaurantsShown ?? getDataFromApi("/restaurants");
+            reactiveModel.restaurantsShown = data.restaurantsShown ?? [];
             reactiveModel.filtersApplied = data.filtersApplied ?? [];
+            reactiveModel.setReady(true);
+            console.log("Model ready set to true (from Firebase)");
+        }
+    }
 
-
-
-        };
-        reactiveModel.setReady(true);
-        console.log("Model ready set to true (after snapshot)"); //debug
-    };
-
-    function handleGetErrorACB() {
+    function handleGetErrorACB(error) {
         console.log("Error getting snapshot:", error);
-        reactiveModel.restaurantsShown = getDataFromApi("/restaurants"); // sätt in fler värden
-        reactiveModel.filtersApplied = [];
-
-
-
-        reactiveModel.setReady(true);
-        console.log("Model ready set to true (after error)");
-    };
+        loadInitialData();
+    }
 
     function checkModelPropertiesACB() {
         return [reactiveModel.ready, reactiveModel.restaurantsShown, reactiveModel.filtersApplied];
-    };
+    }
 
     async function giveDataToFireBaseACB() {
-        if (!reactiveModel.ready) {
+        if (!reactiveModel.ready || !auth.currentUser) {
             return;
-        };
+        }
+        
         try {
-            const snapshot = await getDoc(docReference);
-            const existingData = snapshot.data();
-        } catch (error) {console.log("Error reading existing data:", error);}
+            const docReference = doc(db, COLLECTION, auth.currentUser.uid);
+            const data = {
+                restaurantsShown: reactiveModel.restaurantsShown,
+                filtersApplied: reactiveModel.filtersApplied
+            };
+            await setDoc(docReference, data);
+            console.log("Data saved to Firebase");
+        } catch (error) {
+            console.log("Error saving to Firebase:", error);
+        }
+    }
 
-        const data = {
-            restaurantsShown: reactiveModel.restaurantsShown,
-            filtersApplied: reactiveModel.filtersApplied
-
-
-        };
-        reactiveModel.ready = false;
+    if (auth.currentUser) {
         const docReference = doc(db, COLLECTION, auth.currentUser.uid);
         getDoc(docReference).then(handleSnapShotACB).catch(handleGetErrorACB);
-        return watcherFunction(checkModelPropertiesACB, giveDataToFireBaseACB);
-    };
-};
+    } else {
+        console.log("No user logged in, loading from API only");
+        await loadInitialData();
+    }
+
+    return watcherFunction(checkModelPropertiesACB, giveDataToFireBaseACB);
+}

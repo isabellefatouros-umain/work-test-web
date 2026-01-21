@@ -1,4 +1,161 @@
-/* Style for Restaurant Card component */
+/* Global Styles */
+:root {
+  width: 1440px;
+  height: 900px;
+  background: var(--off-white, #FAFAFA);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+/* Header */
+.header {
+  width: 273.425px;
+  height: 40px;
+  fill: var(--black, #000);
+}
+
+
+
+/* Topbar Filter */
+.topbar-filter-parent {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.topbar-filter-card {
+  width: 160px;
+  height: 80px;
+  border-radius: 8px;
+  border: 0.6px solid var(--stroke, rgba(0, 0, 0, 0.10));
+  background: var(--white, #FFF);
+
+  /* basic shadow */
+  box-shadow: -98px 56px 32px 0 rgba(0, 0, 0, 0.00),
+  -63px 36px 29px 0 rgba(0, 0, 0, 0.00),
+  -35px 20px 24px 0 rgba(0, 0, 0, 0.00),
+  -16px 9px 18px 0 rgba(0, 0, 0, 0.01),
+  -4px 2px 10px 0 rgba(0, 0, 0, 0.01);
+}
+
+.topbar-filter-label {
+  color: var(--black, #000);
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 14px */
+  letter-spacing: -0.5px;
+}
+
+.topbar-filter-img {
+  width: 80px;
+  height: 80px;
+}
+
+
+
+/* Sidebar Filter */
+.sidebar-filter-parent {
+  display: flex;
+  width: 239px;
+  height: 764px;
+  padding: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  border-radius: 10px;
+  border: 0.6px solid var(--stroke, rgba(0, 0, 0, 0.10));
+  background: var(--white, #FFF);
+
+  /* basic shadow */
+  box-shadow: -98px 56px 32px 0 rgba(0, 0, 0, 0.00),
+  -63px 36px 29px 0 rgba(0, 0, 0, 0.00),
+  -35px 20px 24px 0 rgba(0, 0, 0, 0.00),
+  -16px 9px 18px 0 rgba(0, 0, 0, 0.01),
+  -4px 2px 10px 0 rgba(0, 0, 0, 0.01);
+}
+
+.sidebar-filter-title {
+  color: var(--black, #000);
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 24px */
+  letter-spacing: -0.5px;
+}
+
+.sidebar-filter-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-subcategory-title {
+  color: var(--black, #000);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 590;
+  line-height: 100%; /* 12px */
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+  opacity: 0.4;
+}
+
+.filter-food-category,
+.filter-delivery-time,
+.filter-price-range {
+  margin-bottom: 16px;
+}
+
+.sidebar-filter-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.sidebar-filter-item-label {
+  color: var(--black, #000);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 125%; /* 15px */
+  letter-spacing: -0.5px;
+}
+
+
+
+/* Filter Result */
+.filter-results-parent {
+  display: flex;
+  width: 1015px;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 17px;
+  flex-wrap: wrap;
+}
+
+.filter-results-title {
+  color: var(--black, #000);
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 40px */
+  letter-spacing: -0.5px;
+}
+
+
+
+/* RestaurantCard component */
 .restaurant-card {
   display: flex;
   width: 327px;
@@ -13,13 +170,16 @@
   background: var(--white, #FFF);
 
   /* basic shadow */
-  box-shadow: -98px 56px 32px 0 rgba(0, 0, 0, 0.00), -63px 36px 29px 0 rgba(0, 0, 0, 0.00), -35px 20px 24px 0 rgba(0, 0, 0, 0.00), -16px 9px 18px 0 rgba(0, 0, 0, 0.01), -4px 2px 10px 0 rgba(0, 0, 0, 0.01);
+  box-shadow: -98px 56px 32px 0 rgba(0, 0, 0, 0.00),
+  -63px 36px 29px 0 rgba(0, 0, 0, 0.00),
+  -35px 20px 24px 0 rgba(0, 0, 0, 0.00),
+  -16px 9px 18px 0 rgba(0, 0, 0, 0.01),
+  -4px 2px 10px 0 rgba(0, 0, 0, 0.01);
 }
 
 .lower-text {
   color: var(--black, #000);
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "SF Pro";
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -31,7 +191,6 @@
   width: 213px;
   color: var(--black, #000);
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "SF Pro";
   font-size: 24px;
   font-style: normal;
   font-weight: 400;
@@ -50,6 +209,10 @@
   background: var(--white, #FFF);
 
   /* basic shadow */
-  box-shadow: -98px 56px 32px 0 rgba(0, 0, 0, 0.00), -63px 36px 29px 0 rgba(0, 0, 0, 0.00), -35px 20px 24px 0 rgba(0, 0, 0, 0.00), -16px 9px 18px 0 rgba(0, 0, 0, 0.01), -4px 2px 10px 0 rgba(0, 0, 0, 0.01);
+  box-shadow: -98px 56px 32px 0 rgba(0, 0, 0, 0.00),
+  -63px 36px 29px 0 rgba(0, 0, 0, 0.00),
+  -35px 20px 24px 0 rgba(0, 0, 0, 0.00),
+  -16px 9px 18px 0 rgba(0, 0, 0, 0.01),
+  -4px 2px 10px 0 rgba(0, 0, 0, 0.01);
 }
 

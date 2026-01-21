@@ -28,16 +28,14 @@ export const TopbarFilter = observer(
 
         return (
         <div className="debug">
-            <TopbarFilterView dishTypeOptions = {["starter", "main course", "dessert"]}
-                            text = {props.model.searchParams.query}
-                            type = {props.model.searchParams.type} 
-                            onQueryChange = {onQueryChangeACB}
-                            onChangedType = {onChangedTypeACB}
+            <TopbarFilterView
+                            onTopFilterChanged = {onTopFilterChangedACB}
+                            onSideFilterChanged = {onSideFilterChangedACB}
                             onSearchClick = {onSearchClickACB}/>
-            {(props.model.searchResultsPromiseState && props.model.searchResultsPromiseState.data && <SearchResultsView searchResults = {props.model.searchResultsPromiseState.data}
+            {(props.model.filterResultsPromiseState && props.model.filterResultsPromiseState.data && <SearchResultsView searchResults = {props.model.filterResultsPromiseState.data}
                                                                                                                         currentDishEffect ={onSearchResultChosenACB}/>) || 
-            <SuspenseView promise = {props.model.searchResultsPromiseState.promise}
-                        error = {props.model.searchResultsPromiseState.error}/>}
+            <SuspenseView promise = {props.model.filterResultsPromiseState.promise}
+                        error = {props.model.filterResultsPromiseState.error}/>}
         </div>
         );
     }
