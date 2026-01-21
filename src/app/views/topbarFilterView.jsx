@@ -1,6 +1,6 @@
 import "/web/styles/style.css"
 
-export function TopbarFilterView(props: any){
+export function TopbarFilterView(props){
 
     return(
         <div className="topbar-filter-view">

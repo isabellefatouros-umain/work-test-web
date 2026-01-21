@@ -1,6 +1,6 @@
 import "/web/styles/style.css"
 
-export function FilterResultsView(props: any){
+export function FilterResultsView(props){
 
     return(
         <div className="filter-results-view">

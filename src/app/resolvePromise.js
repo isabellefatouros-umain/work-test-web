@@ -1,4 +1,4 @@
-export function resolvePromise(prms: Promise<any>, promiseState: { promise: any; data: null; error: null; }){
+export function resolvePromise(prms, promiseState){
     console.log("Resolving promise:", prms);
     console.log("With promise state:", promiseState);
 
@@ -6,14 +6,14 @@ export function resolvePromise(prms: Promise<any>, promiseState: { promise: any;
     promiseState.data= null;
     promiseState.error= null;
 
-    function saveDataACB(promiseResult: any){
+    function saveDataACB(promiseResult){
         console.log(promiseResult);
         if(promiseState.promise === prms){
             promiseState.data = promiseResult;
         };
     };
 
-    function errorACB(promise: any){
+    function errorACB(promise){
         console.log(promise);
         console.log(prms);
         console.log(promiseState);

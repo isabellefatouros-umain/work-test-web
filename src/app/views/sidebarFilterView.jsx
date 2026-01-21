@@ -1,6 +1,6 @@
 import "/web/styles/style.css"
 
-export function SidebarFilterView(props: any){
+export function SidebarFilterView(props){
 
     return(
         <div className="sidebar-filter-view">

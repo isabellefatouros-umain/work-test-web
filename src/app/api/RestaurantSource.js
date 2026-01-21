@@ -1,14 +1,14 @@
 import { API_URL } from "./apiConfig"
 
-export function getDataFromApi( apiEndpoint: string ){
-    function gotResponseACB(response: { status: number; json: () => any; }){
+export function getDataFromApi( apiEndpoint){
+    function gotResponseACB(response){
         if (response.status === 200){ 
             return response.json();
         } else {
             throw Error;};
     };
 
-    function getResultsACB(json: { results: any; }){
+    function getResultsACB(json){
         return json.results;
     };
 
