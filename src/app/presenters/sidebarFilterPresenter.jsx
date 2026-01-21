@@ -28,11 +28,9 @@ export const SidebarFilter = observer(
 
         return (
         <div className="debug">
-            <SearchFormView dishTypeOptions = {["starter", "main course", "dessert"]}
-                            text = {props.model.searchParams.query}
-                            type = {props.model.searchParams.type} 
-                            onQueryChange = {onQueryChangeACB}
-                            onChangedType = {onChangedTypeACB}
+            <SidebarFilterView dishTypeOptions = {["starter", "main course", "dessert"]} 
+                            onTopFilterChanged = {onTopFilterChangedACB}
+                            onSideFilterChanged = {onSideFilterChangedACB}
                             onSearchClick = {onSearchClickACB}/>
             {(props.model.searchResultsPromiseState && props.model.searchResultsPromiseState.data && <SearchResultsView searchResults = {props.model.searchResultsPromiseState.data}
                                                                                                                         currentDishEffect ={onSearchResultChosenACB}/>) || 

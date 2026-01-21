@@ -4,7 +4,6 @@ import { observable, configure, reaction } from "mobx";
 
 export const reactiveModel= observable(model);
 
-window.myModel= reactiveModel;
 configure({ enforceActions: "always" });
 
 function checkIdStateACB(){
@@ -15,7 +14,7 @@ function resolvingDishPromiseACB(){
     return reactiveModel.currentDishEffect();
 };
 
-myModel.doFilter({});
+reactiveModel.doFilter({});
 
 connectToPersistence(reactiveModel, reaction);
 

@@ -5,7 +5,8 @@ export function getDataFromApi( apiEndpoint){
         if (response.status === 200){ 
             return response.json();
         } else {
-            throw Error;};
+            throw Error;
+        };
     };
 
     function getResultsACB(json){

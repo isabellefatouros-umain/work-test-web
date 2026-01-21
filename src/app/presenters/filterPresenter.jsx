@@ -28,7 +28,7 @@ export const Filter = observer(
 
         return (
         <div className="debug">
-            <SearchFormView dishTypeOptions = {["starter", "main course", "dessert"]}
+            <FilterResultsView dishTypeOptions = {["starter", "main course", "dessert"]}
                             text = {props.model.searchParams.query}
                             type = {props.model.searchParams.type} 
                             onQueryChange = {onQueryChangeACB}

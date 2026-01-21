@@ -2,11 +2,10 @@ import { resolvePromise } from "./resolvePromise";
 import { getDataFromApi } from "./api/restaurantSource";
 
 export const model = {
-    user: undefined,
     ready: false,
-    restaurants: [],
-    filters: [],
+    restaurantsShown: [],
     filtersApplied: [],
+    filterResultsPromiseState: {},
 
 
     setUser(user){
@@ -17,8 +16,8 @@ export const model = {
         this.ready = value
     },
 
-    getRestaurants(){
-        return this.restaurants
+    getRestaurantsShown(){
+        return this.restaurantsShown
     },
 
     getFilters(){
@@ -31,7 +30,6 @@ export const model = {
 
     doFilter(filterIds){
         this.filtersApplied = filterIds;
-        this.resolveRestaurantsPromise();
     },
 };
 

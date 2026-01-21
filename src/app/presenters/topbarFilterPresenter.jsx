@@ -28,7 +28,7 @@ export const TopbarFilter = observer(
 
         return (
         <div className="debug">
-            <SearchFormView dishTypeOptions = {["starter", "main course", "dessert"]}
+            <TopbarFilterView dishTypeOptions = {["starter", "main course", "dessert"]}
                             text = {props.model.searchParams.query}
                             type = {props.model.searchParams.type} 
                             onQueryChange = {onQueryChangeACB}
