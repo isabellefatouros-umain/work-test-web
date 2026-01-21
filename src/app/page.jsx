@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactRoot } from "../ReactRoot.jsx";
+import { ReactRoot } from "./ReactRoot.jsx";
 import { reactiveModel } from "../mobxReactiveModel.js";
 
 export default function Home() {

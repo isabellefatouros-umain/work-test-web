@@ -5,8 +5,12 @@ export function SoundCard({props}) {
   return (
     <div className="restaurant-card">
         <div className="restaurant-name">{props.name}</div>
-        <div className="restaurant-open">Rating: {props.is_currently_open}</div>
-        <div className="restaurant-delivery-time">{props.delivery_time_minutes} min</div>
+        <div className="restaurant-open">
+          <span className ="lower-text">{props.is_currently_open}</span>
+          </div>
+        <div className="restaurant-delivery-time">
+          <span className="lower-text">{props.delivery_time_minutes} min</span>
+        </div>
         <div className="restaurant-type-img">
             <img src={props.image} draggable="false" />
         </div>
