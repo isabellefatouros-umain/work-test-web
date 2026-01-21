@@ -1,15 +1,11 @@
-/*
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc, getDoc, deleteField } from "firebase/firestore";
-import { firebaseConfig } from "/src/firebaseConfig.js";
+import { firebaseConfig } from "./firebaseConfig.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 const db = getFirestore(app);
-window.db = db
-window.doc = doc
-window.setDoc = setDoc
 const COLLECTION = "restaurants";
 
 export function connectToPersistence(reactiveModel, watchFunction) {
@@ -105,4 +101,3 @@ export function connectToPersistence(reactiveModel, watchFunction) {
         return setDoc(docReference, data, { merge: true });
     };
 };
-*/

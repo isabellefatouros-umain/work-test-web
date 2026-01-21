@@ -1,4 +1,4 @@
-import './styles/style.css';
+import "../styles/globals.css";
 
 export function FilterCard({props}) {
 

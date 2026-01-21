@@ -1,5 +1,5 @@
 import { resolvePromise } from "./resolvePromise";
-import { getDataFromApi } from "./api/RestaurantSource";
+import { getDataFromApi } from "./api/restaurantSource";
 
 export const model = {
     user: undefined,
@@ -27,7 +27,12 @@ export const model = {
 
     getFiltersApplied(){
         return this.filtersApplied
-    }
+    },
+
+    doFilter(filterIds){
+        this.filtersApplied = filterIds;
+        this.resolveRestaurantsPromise();
+    },
 };
 
 /*

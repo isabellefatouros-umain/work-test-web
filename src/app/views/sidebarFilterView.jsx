@@ -1,4 +1,4 @@
-import "/web/styles/style.css"
+import "../styles/globals.css";
 
 export function SidebarFilterView(props){
 
