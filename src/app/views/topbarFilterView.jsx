@@ -1,14 +1,28 @@
 import "../styles/globals.css";
 
 export function TopbarFilterView(props){
+    if (!props.availableFilters || !props.activeFilters) {
+        return null;
+    }
 
     return(
         <div className="topbar-filter-parent">
-            <TopbarFilterCard props={props} />
+            <div className="topbar-filter-cards">
+                {props.availableFilters.map(filter => (
+                    <button
+                        key={filter}
+                        className={props.activeFilters.includes(filter) ? "active" : ""}
+                        onClick={() => props.onFilterClick(filter)}
+                    >
+                        {filter}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 };
 
+/*
 function TopbarFilterCard({props}) {
   return (
     <div id={props.id} className="topbar-filter-card">
@@ -19,3 +33,4 @@ function TopbarFilterCard({props}) {
     </div>
   );
 }
+*/

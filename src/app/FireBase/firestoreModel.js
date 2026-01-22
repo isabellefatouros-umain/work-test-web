@@ -17,18 +17,20 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
 
         try {
             const restaurants = await getDataFromApi("/restaurants");
+            const filters = await getDataFromApi("/filter");
+            console.log("Fetched filters:", filters);
             console.log("Loaded restaurants:", restaurants);
             runInAction(() => {
-                reactiveModel.setRestaurantsShown(restaurants || []);
-                reactiveModel.setFiltersApplied([]);
+                reactiveModel.setRestaurants(restaurants || []);
+                reactiveModel.setFilter(filters || []);
                 reactiveModel.setReady(true);
             });
             console.log("Model ready set to true");
         } catch (error) {
             console.error("Error loading restaurants:", error);
             runInAction(() => {
-                reactiveModel.setRestaurantsShown([]);
-                reactiveModel.setFiltersApplied([]);
+                reactiveModel.setRestaurants([]);
+                reactiveModel.setFilter([]);
                 reactiveModel.setReady(true);
             });
         }
@@ -41,8 +43,8 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
         if (!data) {
             loadInitialData();
         } else {
-            reactiveModel.setRestaurantsShown(data.restaurantsShown ?? []);
-            reactiveModel.setFiltersApplied(data.filtersApplied ?? []);
+            reactiveModel.setRestaurants(data.restaurants ?? []);
+            reactiveModel.setFilter(data.filters ?? []);
             reactiveModel.setReady(true);
             console.log("Model ready set to true (from Firebase)");
         }});
@@ -58,15 +60,15 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
     }
 
     async function giveDataToFireBaseACB() {
-        if (!reactiveModel.ready || !auth.currentUser) {
+        if (!reactiveModel.ready) {
             return;
         }
         
         try {
-            const docReference = doc(db, COLLECTION, auth.currentUser.uid);
+            const docReference = doc(db, COLLECTION, "SavedData");
             const data = {
-                restaurantsShown: reactiveModel.restaurantsShown,
-                filtersApplied: reactiveModel.filtersApplied
+                restaurants: reactiveModel.restaurants,
+                filters: reactiveModel.filters,
             };
             await setDoc(docReference, data);
             console.log("Data saved to Firebase");
@@ -74,14 +76,8 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
             console.log("Error saving to Firebase:", error);
         }
     }
-
-    if (auth.currentUser) {
-        const docReference = doc(db, COLLECTION, auth.currentUser.uid);
+        const docReference = doc(db, COLLECTION, "SavedData");
         getDoc(docReference).then(handleSnapShotACB).catch(handleGetErrorACB);
-    } else {
-        console.log("No user logged in, loading from API only");
-        await loadInitialData();
-    }
 
-    return watcherFunction(checkModelPropertiesACB, giveDataToFireBaseACB);
+        return watcherFunction(checkModelPropertiesACB, giveDataToFireBaseACB);
 }

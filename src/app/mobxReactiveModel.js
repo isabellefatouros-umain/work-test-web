@@ -10,6 +10,4 @@ function checkIdStateACB(){
     return reactiveModel.filtersApplied;
 }
 
-reactiveModel.doFilter({});
-
 export { connectToPersistence, checkIdStateACB };

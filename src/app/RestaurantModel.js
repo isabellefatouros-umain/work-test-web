@@ -1,45 +1,47 @@
 import { resolvePromise } from "./resolvePromise";
-import { getDataFromApi } from "./api/restaurantSource";
 
 export const model = {
     ready: false,
-    restaurantsShown: [],
-    filtersApplied: [],
-    filterResultsPromiseState: {},
-    user: null,
-
-
-    setUser(user){
-        this.user = user
-    },
+    allRestaurants: [],
+    availableFilters: {},
+    appliedFilters: [],
+    filterResultsPromiseState: { promise: null, data: null, error: null },
 
     setReady(value){
         this.ready = value
     },
 
-    setRestaurantsShown(restaurants){
-        this.restaurantsShown = restaurants;
+    setRestaurants(restaurants){
+        this.allRestaurants = restaurants;
     },
 
-    setFiltersApplied(filters){
-        this.filtersApplied = filters;
+    setFilter(filter){
+        this.availableFilters = filter;
     },
 
-    getRestaurantsShown(){
-        return this.restaurantsShown
+    getRestaurants(){
+        return this.allRestaurants
     },
 
-    getFilters(){
-        return this.filters
+    toggleFilter(filter) {
+        if (this.appliedFilters.includes(filter)) {
+            this.appliedFilters = this.appliedFilters.filter(f => f !== filter);
+        } else {
+            this.appliedFilters.push(filter);
+        }
     },
 
-    getFiltersApplied(){
-        return this.filtersApplied
-    },
-
-    doFilter(filterIds){
-        this.filtersApplied = filterIds;
-    },
+    getRestaurantsShown() {
+        let filtered = this.filterResultsPromiseState.data || [];
+        if (this.appliedFilters.length > 0) {
+            filtered = filtered.filter(r =>
+                this.appliedFilters.some(f =>
+                    r.filter_ids?.includes(f)
+                )
+            );
+        }
+        return filtered;
+    }
 };
 
 /*
