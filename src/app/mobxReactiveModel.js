@@ -10,12 +10,6 @@ function checkIdStateACB(){
     return reactiveModel.filtersApplied;
 }
 
-function resolvingDishPromiseACB(){
-    return reactiveModel.currentDishEffect();
-};
-
 reactiveModel.doFilter({});
 
-connectToPersistence(reactiveModel, reaction);
-
-reaction(checkIdStateACB, resolvingDishPromiseACB);
+export { connectToPersistence, checkIdStateACB };

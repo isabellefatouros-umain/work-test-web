@@ -6,6 +6,7 @@ export const model = {
     restaurantsShown: [],
     filtersApplied: [],
     filterResultsPromiseState: {},
+    user: null,
 
 
     setUser(user){
@@ -14,6 +15,14 @@ export const model = {
 
     setReady(value){
         this.ready = value
+    },
+
+    setRestaurantsShown(restaurants){
+        this.restaurantsShown = restaurants;
+    },
+
+    setFiltersApplied(filters){
+        this.filtersApplied = filters;
     },
 
     getRestaurantsShown(){

@@ -1,8 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { SuspenseView } from "../views/suspenseView.jsx";
-import { SidebarFilterView } from "../views/sidebarFilterView.jsx";
 import { TopbarFilterView } from "../views/topbarFilterView.jsx";
-import { FilterResultsView } from "../views/filterResultsView.jsx";
 
 export const TopbarFilter = observer(
     function FilterRender(props){

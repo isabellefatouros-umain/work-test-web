@@ -5,12 +5,13 @@ export function getDataFromApi( apiEndpoint){
         if (response.status === 200){ 
             return response.json();
         } else {
-            throw Error;
+            throw new Error(`API returned status ${response.status}`);
         };
     };
 
     function getResultsACB(json){
-        return json.results;
+        console.log("Full API response:", json);
+        return json.restaurants || json.results || [];
     };
 
     return fetch(`${ API_URL }`+`${ apiEndpoint }`).then(gotResponseACB).then(getResultsACB);

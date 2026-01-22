@@ -1,8 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, getDoc, deleteField } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { firebaseConfig } from "./firebaseConfig.js";
 import { getAuth } from "firebase/auth";
 import { getDataFromApi } from "../api/restaurantSource.js";
+import { runInAction } from "mobx";
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
@@ -17,28 +18,34 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
         try {
             const restaurants = await getDataFromApi("/restaurants");
             console.log("Loaded restaurants:", restaurants);
-            reactiveModel.restaurantsShown = restaurants || [];
-            reactiveModel.filtersApplied = [];
-            reactiveModel.setReady(true);
+            runInAction(() => {
+                reactiveModel.setRestaurantsShown(restaurants || []);
+                reactiveModel.setFiltersApplied([]);
+                reactiveModel.setReady(true);
+            });
             console.log("Model ready set to true");
         } catch (error) {
             console.error("Error loading restaurants:", error);
-            reactiveModel.restaurantsShown = [];
-            reactiveModel.filtersApplied = [];
-            reactiveModel.setReady(true);
+            runInAction(() => {
+                reactiveModel.setRestaurantsShown([]);
+                reactiveModel.setFiltersApplied([]);
+                reactiveModel.setReady(true);
+            });
         }
     }
 
     async function handleSnapShotACB(snapshot) {
         const data = snapshot.data();
+
+        runInAction(() => {
         if (!data) {
-            await loadInitialData();
+            loadInitialData();
         } else {
-            reactiveModel.restaurantsShown = data.restaurantsShown ?? [];
-            reactiveModel.filtersApplied = data.filtersApplied ?? [];
+            reactiveModel.setRestaurantsShown(data.restaurantsShown ?? []);
+            reactiveModel.setFiltersApplied(data.filtersApplied ?? []);
             reactiveModel.setReady(true);
             console.log("Model ready set to true (from Firebase)");
-        }
+        }});
     }
 
     function handleGetErrorACB(error) {

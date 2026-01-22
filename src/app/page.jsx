@@ -1,57 +1,28 @@
 "use client";
 
 import { ReactRoot } from "./ReactRoot.jsx";
-import { reactiveModel } from "./mobxReactiveModel.js";
-import { getDataFromApi } from "./api/restaurantSource.js";
+import { reactiveModel, connectToPersistence } from "./mobxReactiveModel.js";
+import { SuspenseView } from "./views/suspenseView.jsx";
+import { reaction } from "mobx";
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 
-export default function Home() {
-  const [testData, setTestData] = useState(null);
-  
-  useEffect(() => {
-    // Testa API-anrop
-    getDataFromApi("/restaurants")
-      .then(data => {
-        console.log("API test successful:", data);
-        setTestData(data);
-      })
-      .catch(error => {
-        console.error("API test failed:", error);
-      });
-  }, []);
+const Home = observer(function Home() {
+  const [isClient, setIsClient] = useState(false);
 
+  useEffect(() => {setIsClient(true); connectToPersistence(reactiveModel, reaction);}, []);
+
+  if (!isClient) {
+    return (
+      <SuspenseView model={reactiveModel} />
+    );
+  }
   return (
-    <div>
-      <h2>Debug Info:</h2>
-      <p>Model ready: {reactiveModel.ready ? "Yes" : "No"}</p>
-      <p>Restaurants in model: {reactiveModel.restaurantsShown?.length || 0}</p>
-      <p>API test data: {testData ? `${testData.length} restaurants` : "Loading..."}</p>
-      
-      <hr style={{ margin: '2rem 0' }} />
-      
-      <ReactRoot model={reactiveModel} />
-    </div>
-  );
-}
+          <div>
+            <ReactRoot model={reactiveModel} />
+          </div>
+        );
+  }
+);
 
-/*"use client";
-
-import { ReactRoot } from "./ReactRoot.jsx";
-import { reactiveModel } from "./mobxReactiveModel.js";
-
-export default function Home() {
-  console.log("Model:", reactiveModel);
-  console.log("Model ready:", reactiveModel.ready);
-  
-  return (
-    <div>
-      <h2>Debug Info:</h2>
-      <p>Model ready: {reactiveModel.ready ? "Yes" : "No"}</p>
-      <p>Model exists: {reactiveModel ? "Yes" : "No"}</p>
-      
-      <hr style={{ margin: '2rem 0' }} />
-      
-      <ReactRoot model={reactiveModel} />
-    </div>
-  );
-}*/
+export default Home;

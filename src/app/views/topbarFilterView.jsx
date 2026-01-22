@@ -4,12 +4,12 @@ export function TopbarFilterView(props){
 
     return(
         <div className="topbar-filter-parent">
-            <topbarFilterCard props={props} />
+            <TopbarFilterCard props={props} />
         </div>
     );
 };
 
-function topbarFilterCard({props}) {
+function TopbarFilterCard({props}) {
   return (
     <div id={props.id} className="topbar-filter-card">
         <div className="topbar-filter-label">{props.name}</div>
