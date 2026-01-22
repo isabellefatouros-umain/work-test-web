@@ -12,7 +12,28 @@ body {
   padding: 0;
 }
 
+.page-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
 
+.topfilter-results-layout {
+  position: sticky;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.results-layout {
+  display: flex;
+  width: 1015px;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 17px;
+  flex-wrap: wrap;
+}
 
 /* Header */
 .header {
@@ -151,6 +172,15 @@ body {
   font-weight: 400;
   line-height: 100%; /* 40px */
   letter-spacing: -0.5px;
+}
+
+.results-content {
+ display: flex;
+  width: 1015px;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 17px;
+  flex-wrap: wrap;
 }
 
 

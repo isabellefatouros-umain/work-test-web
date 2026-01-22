@@ -1,25 +1,26 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { firebaseConfig } from "./firebaseConfig.js";
-import { getAuth } from "firebase/auth";
 import { getDataFromApi } from "../api/restaurantSource.js";
 import { runInAction } from "mobx";
 
+
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
 const db = getFirestore(app);
 const COLLECTION = "restaurants";
+const restaurants = await getDataFromApi("/restaurants");
+const filters = await getDataFromApi("/filter");
+console.log("Fetched filters:", filters);
+console.log("Loaded restaurants:", restaurants);
 
 export async function connectToPersistence(reactiveModel, watcherFunction) {
+    console.log("connectToPersistence called"); //debug
     
+
     async function loadInitialData() {
         console.log("Loading initial data...");
 
         try {
-            const restaurants = await getDataFromApi("/restaurants");
-            const filters = await getDataFromApi("/filter");
-            console.log("Fetched filters:", filters);
-            console.log("Loaded restaurants:", restaurants);
             runInAction(() => {
                 reactiveModel.setRestaurants(restaurants || []);
                 reactiveModel.setFilter(filters || []);
@@ -56,13 +57,11 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
     }
 
     function checkModelPropertiesACB() {
-        return [reactiveModel.ready, reactiveModel.restaurantsShown, reactiveModel.filtersApplied];
+        return [reactiveModel.ready];
     }
 
     async function giveDataToFireBaseACB() {
-        if (!reactiveModel.ready) {
-            return;
-        }
+        if (!reactiveModel.ready) {return;}
         
         try {
             const docReference = doc(db, COLLECTION, "SavedData");
@@ -78,6 +77,5 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
     }
         const docReference = doc(db, COLLECTION, "SavedData");
         getDoc(docReference).then(handleSnapShotACB).catch(handleGetErrorACB);
-
         return watcherFunction(checkModelPropertiesACB, giveDataToFireBaseACB);
 }

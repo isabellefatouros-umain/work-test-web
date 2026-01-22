@@ -50,15 +50,3 @@ export function SidebarFilterView(props){
         </div>
     );
 };
-
-/*
-function SidebarFilterItem(props){
-    return(
-        <div id={props.id} className="sidebar-filter-item">
-            <button  name={props.name} checked={props.checked} onChange={props.onChange}>
-                <label className="sidebar-filter-item-label" htmlFor={props.id}>{props.name}</label>
-            </button> 
-        </div>
-    );
-}
-*/

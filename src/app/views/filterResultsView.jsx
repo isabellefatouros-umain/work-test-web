@@ -7,10 +7,10 @@ export function FilterResultsView(props){
     }
 
     return(
-        <div className="filter-results-parent">
-            <h2 className="filter-results-title">Restaurant’s</h2>
+        <div className="results-parent">
+            <h2 className="results-title">Restaurant’s</h2>
 
-            <div className="filter-results-content">
+            <div className="results-content">
                 {props.restaurants.length === 0 ? (
                     <p>Inga restauranger matchar dina filter.</p>
                 ) : (

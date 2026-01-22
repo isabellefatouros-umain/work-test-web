@@ -1,7 +1,4 @@
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
-import { getDataFromApi } from "../api/restaurantSource.js";
-import { resolvePromise } from "../resolvePromise.js";
 import { SuspenseView } from "../views/suspenseView.jsx";
 import { FilterResultsView } from "../views/filterResultsView.jsx";
 import { TopbarFilterView } from "../views/topbarFilterView.jsx";
@@ -10,37 +7,25 @@ import { SidebarFilterView } from "../views/sidebarFilterView.jsx";
 
 export const RestaurantFilter = observer(
     function RestaurantFilterRender(props) {
-        function onTopFilterClickACB(filter) {
-            props.model.toggleTopFilter(filter);
+        function onFilterClickACB(filter) {
+            props.model.toggleFilter(filter);
         }
-        
-        function onSideFilterClickACB(filter) {
-            props.model.toggleSideFilter(filter);
-        }
-
-        useEffect(() => {
-            resolvePromise(
-                getDataFromApi("/restaurants"),
-                props.model.filterResultsPromiseState
-            );
-            }, []);
 
         return (
-            <div className="top-filter-container">
-                <TopbarFilterView 
-                    onFilterClick={onTopFilterClickACB}
-                    activeFilters={props.model.topFilters}
-                    availableFilters={props.model.availableTopFilters}
-                />
-
-                <div className="main-content">
-                    <SidebarFilterView 
-                        onFilterClick={onSideFilterClickACB}
-                        activeFilters={props.model.sideFilters}
+            <div className="page-layout">
+                <SidebarFilterView 
+                        onFilterClick={onFilterClickACB}
+                        activeFilters={props.model.appliedFilters}
                         availableFilters={props.model.availableFilters}
                     />
 
-                    <div className="results-container">
+                <div className="topbar-results-layout">
+                    <TopbarFilterView 
+                        onFilterClick={onFilterClickACB}
+                        activeFilters={props.model.appliedFilters}
+                        availableFilters={props.model.availableFilters}
+                    />
+                    <div className="results-layout">
                         {props.model.filterResultsPromiseState.data? (
                             <FilterResultsView 
                                 restaurants={props.model.getRestaurantsShown()}
@@ -51,6 +36,8 @@ export const RestaurantFilter = observer(
                                 error={props.model.filterResultsPromiseState.error}
                             />
                         )}
+
+
                     </div>
                 </div>
             </div>
