@@ -1,42 +1,31 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { firebaseConfig } from "./firebaseConfig.js";
-import { getDataFromApi } from "../api/restaurantSource.js";
 import { runInAction } from "mobx";
-
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const COLLECTION = "restaurants";
-const restaurants = await getDataFromApi("/restaurants");
-const filters = await getDataFromApi("/filter");
-console.log("Fetched filters:", filters);
-console.log("Loaded restaurants:", restaurants);
-
 
 export async function connectToPersistence(reactiveModel, watcherFunction) {
     console.log("connectToPersistence called"); //debug
     
 
     async function loadInitialData() {
-        console.log("Loading initial data...");
+        console.log("Loading initial data..."); //debug
 
         try {
-            const filtersToUse = (filters && filters.length > 0) 
-                ? reactiveModel.extractFiltersFromRestaurants(restaurants)
-                : reactiveModel.extractFiltersFromRestaurants(restaurants);
-
             runInAction(() => {
-                reactiveModel.setRestaurants(restaurants || []);
-                reactiveModel.setFilter(filtersToUse);
+                reactiveModel.setRestaurants(reactiveModel.allRestaurants);
+                reactiveModel.setFilter(reactiveModel.availableFilters);
                 reactiveModel.setReady(true);
             });
             console.log("Model ready set to true");
         } catch (error) {
             console.error("Error loading restaurants:", error);
             runInAction(() => {
-                reactiveModel.setRestaurants([]);
-                reactiveModel.setFilter([]);
+                reactiveModel.setRestaurants(reactiveModel.allRestaurants);
+                reactiveModel.setFilter(reactiveModel.availableFilters);
                 reactiveModel.setReady(true);
             });
         }
@@ -49,10 +38,10 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
         if (!data) {
             loadInitialData();
         } else {
-            reactiveModel.setRestaurants(data.restaurants ?? []);
-            reactiveModel.setFilter(data.filters ?? []);
+            reactiveModel.setRestaurants(reactiveModel.allRestaurants);
+            reactiveModel.setFilter(data.appliedFilters ?? reactiveModel.availableFilters);
             reactiveModel.setReady(true);
-            console.log("Model ready set to true (from Firebase)");
+            console.log("Model ready set to true (from firebase)");
         }});
     }
 
@@ -65,7 +54,7 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
         return [reactiveModel.ready];
     }
 
-    async function giveDataToFireBaseACB() {
+    async function giveDataToFirebaseACB() {
         if (!reactiveModel.ready) {return;}
         
         try {
@@ -75,12 +64,12 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
                 filters: reactiveModel.availableFilters,
             };
             await setDoc(docReference, data);
-            console.log("Data saved to Firebase");
+            console.log("Data saved to firebase");
         } catch (error) {
-            console.log("Error saving to Firebase:", error);
+            console.log("Error saving to firebase:", error);
         }
     }
         const docReference = doc(db, COLLECTION, "SavedData");
         getDoc(docReference).then(handleSnapShotACB).catch(handleGetErrorACB);
-        return watcherFunction(checkModelPropertiesACB, giveDataToFireBaseACB);
+        return watcherFunction(checkModelPropertiesACB, giveDataToFirebaseACB);
 }

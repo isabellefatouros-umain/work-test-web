@@ -6,5 +6,5 @@ export function SuspenseView(props){
     } if (props.promise && props.error){
         return <span>{props.error.toString()}</span>;
     };
-    return <img src = "https://brfenergi.se/iprog/loading.gif"/>
+    return <div>Loading...</div>;
 };

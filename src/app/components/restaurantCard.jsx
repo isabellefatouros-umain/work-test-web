@@ -10,8 +10,7 @@ export function RestaurantCard({restaurant}) {
           </div>
         <div className="restaurant-delivery-time">
           <span className="lower-text">{restaurant.delivery_time_minutes} min</span>
-        </div>
-        
+        </div> 
     </div>
   );
 }

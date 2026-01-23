@@ -2,10 +2,7 @@ import { observer } from "mobx-react-lite";
 import { RestaurantFilter } from "./presenters/restaurantFilterPresenter.jsx";
 import { SuspenseView } from "./views/suspenseView.jsx";
 
-export const ReactRoot = observer(
-    function ReactRoot(props){
-        console.log("All restaurants:", props.model.allRestaurants);
-        
+export const ReactRoot = observer(function ReactRoot(props){
         if (!props.model.ready){
             return (
                 <div> 

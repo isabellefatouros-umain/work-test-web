@@ -1,5 +1,5 @@
 import { resolvePromise } from "./resolvePromise";
-import { getDataFromApi } from "./api/restaurantSource.js";
+import { getRestaurantsApi, getFiltersApi } from "./api/restaurantSource.js";
 import { makeAutoObservable } from "mobx";
 
 export const model = {
@@ -23,7 +23,6 @@ export const model = {
     },
 
     setFilter(filterData){
-        console.log("Fetched filters:", filterData);
         this.availableFilters = filterData;
     },
 
@@ -31,34 +30,22 @@ export const model = {
         return this.allRestaurants
     },
 
-    getAllFiltersAsArray() {
-        const { foodCategories = [], deliveryTimes = [], priceRanges = [] } = this.availableFilters;
-        return [...foodCategories, ...deliveryTimes, ...priceRanges];
-    },
-
     async loadRestaurants() {
-        const promise = getDataFromApi("/restaurants");
+        const promise = getRestaurantsApi();
+        console.log("Loaded restaurants", promise); //debug
         resolvePromise(promise, this.filterResultsPromiseState);
-        
         try {
             const data = await promise;
             this.setRestaurants(data);
-
             await this.loadFilters();
-            
-            console.log("Restaurants loaded", data.length);
-            console.log("Restaurant filters", data[0].filter_ids);
-            console.log("Available filters", this.availableFilters);
-
-
         } catch (error) {
             console.error("Error loading restaurants:", error);
         }
     },
 
     async loadFilters() {
-        const filters = await getDataFromApi("/filters");
-
+        const filters = await getFiltersApi();
+        console.log("Fetched filters:", filters); //debug
         const categorized = {
             foodCategories: [],
             deliveryTimes: [],
@@ -66,38 +53,14 @@ export const model = {
         };
 
         filters.forEach(f => {
-            if (f.category === "food") categorized.foodCategories.push(f);
-            if (f.category === "delivery_time") categorized.deliveryTimes.push(f);
-            if (f.category === "price") categorized.priceRanges.push(f);
+            if (!f.includes('min') && !f.includes('$')) categorized.foodCategories.push(f);
+            if (f.includes('min')) categorized.deliveryTimes.push(f);
+            if (f.includes('$')) categorized.priceRanges.push(f);
         });
-
         this.availableFilters = categorized;
     },
 
-
-    toggleFilter(filter) {
-        console.log("Applied filters:", this.appliedFilters);
-
-        if (this.appliedFilters.includes(filter)) {
-            this.appliedFilters = this.appliedFilters.filter(f => f !== filter);
-        } else {
-            this.appliedFilters = [...this.appliedFilters, filter];
-        }
-    },
-
-    getRestaurantsShown() {
-        let filtered = this.filterResultsPromiseState.data || [];
-        if (this.appliedFilters.length > 0) {
-            filtered = filtered.filter(r =>
-                this.appliedFilters.some(f =>
-                    r.filter_ids?.includes(f)
-                )
-            );
-        }
-        return filtered;
-    },
-
-    extractFiltersFromRestaurants(restaurants) {
+    getFilterIdsFromRestaurants(restaurants) {
         const allFilterIds = new Set();
         
         restaurants.forEach(restaurant => {
@@ -120,10 +83,30 @@ export const model = {
                 f.includes('$')
             )
         };
-        
-        console.log("Extracted filters:", categorizedFilters);
         return categorizedFilters;
-    }
+    },
+
+    toggleFilter(filter) {
+        console.log("Applied filters:", this.appliedFilters);
+
+        if (this.appliedFilters.includes(filter)) {
+            this.appliedFilters = this.appliedFilters.filter(f => f !== filter);
+        } else {
+            this.appliedFilters = [...this.appliedFilters, filter];
+        }
+    },
+
+    getRestaurantsShown() {
+        let filtered = this.filterResultsPromiseState.data || [];
+        if (this.appliedFilters.length > 0) {
+            filtered = filtered.filter(r =>
+                this.appliedFilters.some(f =>
+                    r.filter_ids?.includes(f)
+                )
+            );
+        }
+        return filtered;
+    }, 
 };
 
 makeAutoObservable(model);
