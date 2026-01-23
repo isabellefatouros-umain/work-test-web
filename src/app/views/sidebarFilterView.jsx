@@ -10,39 +10,39 @@ export function SidebarFilterView(props){
             <h2 className="sidebar-filter-title">Filter</h2>
 
             <div className="sidebar-filter-content">
-                <div className="filter-food-category">
+                <div className="filter-food-category sidebar-filter-item">
                     <h3 className="filter-subcategory-title" >Food Category</h3>
                     {(props.availableFilters.foodCategories || []).map(filter => (
                     <button
-                        key={filter}
-                        className={props.activeFilters.includes(filter) ? "active" : ""}
-                        onClick={() => props.onFilterClick(filter)}
+                        key={filter.id}
+                        className={"filter-pill " + (props.activeFilters.includes(filter.id) ? "active" : "")}
+                        onClick={() => props.onFilterClick(filter.id)}
                     >
-                        {filter}
+                        {filter.name}
                     </button>))}
                 </div>
 
-                <div className="filter-delivery-time">
+                <div className="filter-delivery-time sidebar-filter-item">
                     <h3 className="filter-subcategory-title">Delivery Time</h3>
                     {(props.availableFilters.deliveryTimes || []).map(filter => (
                     <button
-                        key={filter}
-                        className={props.activeFilters.includes(filter) ? "active" : ""}
-                        onClick={() => props.onFilterClick(filter)}
+                        key={filter.id}
+                        className={"filter-pill " + (props.activeFilters.includes(filter.id) ? "active" : "")}
+                        onClick={() => props.onFilterClick(filter.id)}
                     >
-                        {filter}
+                        {filter.name}
                     </button>))}
                 </div>
 
-                <div className="filter-price-range">
+                <div className="filter-price-range sidebar-filter-item">
                     <h3 className="filter-subcategory-title">Price Range</h3>
                     {(props.availableFilters.priceRanges || []).map(filter => (
                     <button 
-                        key={filter}
-                        className={props.activeFilters.includes(filter) ? "active" : ""}
-                        onClick={() => props.onFilterClick(filter)}
+                        key={filter.id}
+                        className={"filter-pill " + (props.activeFilters.includes(filter.id) ? "active" : "")}
+                        onClick={() => props.onFilterClick(filter.id)}
                     >
-                        {filter}
+                        {filter.name}
                     </button>))}
                 </div>
                 

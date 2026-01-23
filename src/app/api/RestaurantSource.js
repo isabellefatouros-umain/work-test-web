@@ -11,7 +11,7 @@ export function getDataFromApi( apiEndpoint){
 
     function getResultsACB(json){
         console.log("Full API response:", json);
-        return json.restaurants || json.results || [];
+        return json.restaurants || json.filters || json.results || [];
     };
 
     return fetch(`${ API_URL }`+`${ apiEndpoint }`).then(gotResponseACB).then(getResultsACB);

@@ -15,13 +15,3 @@ export function RestaurantCard({restaurant}) {
     </div>
   );
 }
-
-/*
-
-<div className="restaurant-type-img">
-            <img src={restaurant.image_url} draggable="false" />
-        </div>
-        <div className="arrow-icon"> 
-            <img src="/web/assets/icons/arrow-right-icon.svg" draggable="false" />
-        </div>
-        */

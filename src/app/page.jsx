@@ -1,16 +1,29 @@
 "use client";
 
 import { ReactRoot } from "./ReactRoot.jsx";
-import { reactiveModel, connectToPersistence } from "./mobxReactiveModel.js";
+import { reactiveModel } from "./mobxReactiveModel.js";
+import { connectToPersistence } from "./firebase/firestoreModel";
 import { SuspenseView } from "./views/suspenseView.jsx";
 import { reaction } from "mobx";
-import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-const Home = observer(function Home() {
+const Home = function Home() {
   const [isClient, setIsClient] = useState(false);
+  const persistenceInitialized = useRef(false);
 
-  useEffect(() => {setIsClient(true); connectToPersistence(reactiveModel, reaction);}, []);
+  useEffect(() => {
+    setIsClient(true);
+    if (!persistenceInitialized.current) {
+      persistenceInitialized.current = true;
+      const disposer = connectToPersistence(reactiveModel, reaction);
+
+      return () => {
+        if (disposer) {
+          disposer();
+        }
+      };
+    }
+  }, []);
 
   if (!isClient) {
     return (
@@ -23,6 +36,5 @@ const Home = observer(function Home() {
           </div>
         );
   }
-);
 
 export default Home;

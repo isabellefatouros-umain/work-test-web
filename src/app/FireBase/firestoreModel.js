@@ -13,6 +13,7 @@ const filters = await getDataFromApi("/filter");
 console.log("Fetched filters:", filters);
 console.log("Loaded restaurants:", restaurants);
 
+
 export async function connectToPersistence(reactiveModel, watcherFunction) {
     console.log("connectToPersistence called"); //debug
     
@@ -21,9 +22,13 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
         console.log("Loading initial data...");
 
         try {
+            const filtersToUse = (filters && filters.length > 0) 
+                ? reactiveModel.extractFiltersFromRestaurants(restaurants)
+                : reactiveModel.extractFiltersFromRestaurants(restaurants);
+
             runInAction(() => {
                 reactiveModel.setRestaurants(restaurants || []);
-                reactiveModel.setFilter(filters || []);
+                reactiveModel.setFilter(filtersToUse);
                 reactiveModel.setReady(true);
             });
             console.log("Model ready set to true");
@@ -66,8 +71,8 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
         try {
             const docReference = doc(db, COLLECTION, "SavedData");
             const data = {
-                restaurants: reactiveModel.restaurants,
-                filters: reactiveModel.filters,
+                restaurants: reactiveModel.allRestaurants,
+                filters: reactiveModel.availableFilters,
             };
             await setDoc(docReference, data);
             console.log("Data saved to Firebase");

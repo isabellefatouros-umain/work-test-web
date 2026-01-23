@@ -12,14 +12,15 @@ export function TopbarFilterView(props){
             <div className="topbar-filter-cards">
                 {props.availableFilters.map(filter => (
                     <button
-                        key={filter}
-                        className={props.activeFilters.includes(filter) ? "active" : ""}
-                        onClick={() => props.onFilterClick(filter)}
+                        key={filter.id}
+                        className={"topbar-filter-card " + (props.activeFilters.includes(filter.id) ? "active" : "")}
+                        onClick={() => props.onFilterClick(filter.id)}
                     >
-                        {filter}
+                        <span>{filter.name}</span>
                     </button>
                 ))}
             </div>
         </div>
     );
 };
+

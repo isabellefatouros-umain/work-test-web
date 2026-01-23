@@ -11,6 +11,9 @@ export const RestaurantFilter = observer(
             props.model.toggleFilter(filter);
         }
 
+        console.log("Model filters:", props.model.availableFilters);
+
+
         return (
             <div className="page-layout">
                 <SidebarFilterView 
@@ -23,7 +26,7 @@ export const RestaurantFilter = observer(
                     <TopbarFilterView 
                         onFilterClick={onFilterClickACB}
                         activeFilters={props.model.appliedFilters}
-                        availableFilters={props.model.availableFilters}
+                        availableFilters={props.model.getAllFiltersAsArray()}
                     />
                     <div className="results-layout">
                         {props.model.filterResultsPromiseState.data? (
