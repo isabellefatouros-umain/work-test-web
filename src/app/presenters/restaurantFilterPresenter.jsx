@@ -8,25 +8,28 @@ export const RestaurantFilter = observer(
     function RestaurantFilterRender(props) {
         function onFilterClickACB(filter) {
             props.model.toggleFilter(filter);
-        }
+            };
+
         return (
             <div className="page-layout">
                 <SidebarFilterView 
                         onFilterClick={onFilterClickACB}
                         activeFilters={props.model.appliedFilters}
-                        availableFilters={props.model.availableFilters}
+                        foodCategoryFilters={props.model.foodCategoryFilters}
+                        deliveryTimeFilters={props.model.deliveryTimeFilters}
+                        priceFilters={props.model.priceFilters}
                     />
 
                 <div className="topbar-results-layout">
                     <TopbarFilterView 
                         onFilterClick={onFilterClickACB}
                         activeFilters={props.model.appliedFilters}
-                        availableFilters={props.model.availableFilters}
+                        foodCategoryFilters={props.model.foodCategoryFilters}
                     />
                     <div className="results-layout">
                         {props.model.filterResultsPromiseState.data? (
                             <FilterResultsView 
-                                restaurants={props.model.getRestaurantsShown()}
+                                restaurants={props.model.filterRestaurants()}
                             />
                         ) : (
                             <SuspenseView 

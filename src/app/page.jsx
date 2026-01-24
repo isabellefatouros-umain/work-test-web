@@ -7,7 +7,7 @@ import { SuspenseView } from "./views/suspenseView.jsx";
 import { reaction } from "mobx";
 import { useEffect, useState, useRef } from "react";
 
-const Home = function Home() {
+export default function Home() {
   const [isClient, setIsClient] = useState(false);
   const persistenceInitialized = useRef(false);
 
@@ -36,5 +36,3 @@ const Home = function Home() {
           </div>
         );
   }
-
-export default Home;

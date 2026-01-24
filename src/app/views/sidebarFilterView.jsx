@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 
 export function SidebarFilterView(props){
-    if (!props.availableFilters || !props.activeFilters) {
+    if (!props.foodCategoryFilters || !props.deliveryTimeFilters || !props.priceFilters || !props.activeFilters) {
         return null;
     }
 
@@ -11,8 +11,8 @@ export function SidebarFilterView(props){
 
             <div className="sidebar-filter-content">
                 <div className="filter-food-category sidebar-filter-item">
-                    <h3 className="filter-subcategory-title" >Food Category</h3>
-                    {(props.availableFilters.foodCategories || []).map(filter => (
+                    <h3 className="filter-subcategory-title">Food Category</h3>
+                    {(props.foodCategoryFilters || []).map(filter => (
                     <button
                         key={filter.id}
                         className={"filter-pill " + (props.activeFilters.includes(filter.id) ? "active" : "")}
@@ -24,7 +24,7 @@ export function SidebarFilterView(props){
 
                 <div className="filter-delivery-time sidebar-filter-item">
                     <h3 className="filter-subcategory-title">Delivery Time</h3>
-                    {(props.availableFilters.deliveryTimes || []).map(filter => (
+                    {(props.deliveryTimeFilters || []).map(filter => (
                     <button
                         key={filter.id}
                         className={"filter-pill " + (props.activeFilters.includes(filter.id) ? "active" : "")}
@@ -36,7 +36,7 @@ export function SidebarFilterView(props){
 
                 <div className="filter-price-range sidebar-filter-item">
                     <h3 className="filter-subcategory-title">Price Range</h3>
-                    {(props.availableFilters.priceRanges || []).map(filter => (
+                    {(props.priceFilters || []).map(filter => (
                     <button 
                         key={filter.id}
                         className={"filter-pill " + (props.activeFilters.includes(filter.id) ? "active" : "")}
@@ -45,7 +45,6 @@ export function SidebarFilterView(props){
                         {filter.name}
                     </button>))}
                 </div>
-                
             </div>
         </div>
     );

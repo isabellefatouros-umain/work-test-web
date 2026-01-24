@@ -9,14 +9,13 @@ const COLLECTION = "restaurants";
 
 export async function connectToPersistence(reactiveModel, watcherFunction) {
     console.log("connectToPersistence called"); //debug
-    
 
     async function loadInitialData() {
         console.log("Loading initial data..."); //debug
 
         try {
             runInAction(() => {
-                reactiveModel.setRestaurants(reactiveModel.allRestaurants);
+                reactiveModel.setAllRestaurants(reactiveModel.allRestaurants);
                 reactiveModel.setFilter(reactiveModel.availableFilters);
                 reactiveModel.setReady(true);
             });
@@ -24,8 +23,10 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
         } catch (error) {
             console.error("Error loading restaurants:", error);
             runInAction(() => {
-                reactiveModel.setRestaurants(reactiveModel.allRestaurants);
-                reactiveModel.setFilter(reactiveModel.availableFilters);
+                reactiveModel.setAllRestaurants(reactiveModel.allRestaurants);
+                reactiveModel.setFilter("foodCategoryFilters", reactiveModel.foodCategoryFilters);
+                reactiveModel.setFilter("priceFilters", reactiveModel.priceFilters);
+                reactiveModel.setFilter("deliveryTimeFilters", reactiveModel.deliveryTimeFilters);
                 reactiveModel.setReady(true);
             });
         }
@@ -38,8 +39,10 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
         if (!data) {
             loadInitialData();
         } else {
-            reactiveModel.setRestaurants(reactiveModel.allRestaurants);
-            reactiveModel.setFilter(data.appliedFilters ?? reactiveModel.availableFilters);
+            reactiveModel.setAllRestaurants(data.restaurants);
+            reactiveModel.setFilter("deliveryTimeFilters", data.filters.deliveryTimeFilters);
+            reactiveModel.setFilter("priceFilters", data.filters.priceFilters);
+            reactiveModel.setFilter("foodCategoryFilters", data.filters.foodCategoryFilters);
             reactiveModel.setReady(true);
             console.log("Model ready set to true (from firebase)");
         }});

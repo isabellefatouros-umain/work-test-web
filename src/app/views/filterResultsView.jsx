@@ -18,8 +18,7 @@ export function FilterResultsView(props){
                     props.allRestaurants.map(restaurant => (
                         <RestaurantCard key={restaurant.id} restaurant={restaurant} />
                     ))
-                )}
-                
+                )}  
             </div>
         </div>
     );

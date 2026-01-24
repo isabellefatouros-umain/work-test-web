@@ -1,16 +1,14 @@
 import "../styles/globals.css";
 
 export function TopbarFilterView(props){
-    console.log("Topbar filters:", props.availableFilters, props.activeFilters);
-
-    if (!props.availableFilters || !props.activeFilters) {
+    if (!props.foodCategoryFilters || !props.activeFilters) {
         return null;
     }
 
     return(
         <div className="topbar-filter-parent">
             <div className="topbar-filter-cards">
-                {props.availableFilters.map(filter => (
+                {(props.foodCategoryFilters || []).map(filter => (
                     <button
                         key={filter.id}
                         className={"topbar-filter-card " + (props.activeFilters.includes(filter.id) ? "active" : "")}
@@ -23,4 +21,3 @@ export function TopbarFilterView(props){
         </div>
     );
 };
-
