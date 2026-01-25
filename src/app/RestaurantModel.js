@@ -70,6 +70,26 @@ export const model = {
         }
     },
 
+    generatePriceFilters() {
+        const priceSet = new Set();
+        this.allRestaurants.forEach(restaurant => {
+            if (restaurant.price_range_id) {
+                priceSet.add(restaurant.price_range_id);
+            }
+        });
+        return Array.from(priceSet).sort();
+    },
+
+    generateDeliveryTimeFilters() {
+        const timeSet = new Set();
+        this.allRestaurants.forEach(restaurant => {
+            const timeFilter = this.assignTimeFilter(restaurant.delivery_time_minutes);
+            timeSet.add(timeFilter);
+        });
+        const order = ["0-10 min", "10-30 min", "30-60 min", "1+ hour"];
+        return Array.from(timeSet).sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    },
+
     assignImgAsset(restaurantImgLink) {
         const keywords = ["hamburgers", "pizza", "taco", "breakfast", "coffee", "fries", "mexican"];
         const match = keywords.find(keyword => restaurantImgLink.includes(keyword));
@@ -81,6 +101,13 @@ export const model = {
         const Is_open = getIsOpenApi(id);
         console.log("Fetched if open", Is_open); //debug
         return Is_open;
+    },
+
+    setIfOpen(restaurantId, isOpen) {
+        const restaurant = this.allRestaurants.find(r => r.id === restaurantId);
+        if (restaurant) {
+            restaurant.is_currently_open = isOpen;
+        }
     },
 
     getFoodFilterIds(restaurants) {
@@ -106,15 +133,25 @@ export const model = {
     },
 
     filterRestaurants() {
-        let filtered = this.filterResultsPromiseState.data || [];
-        if (this.appliedFilters.length > 0) {
-            filtered = filtered.filter(r => this.appliedFilters.some(f => r.filter_ids?.includes(f)));
+        let filtered = this.allRestaurants || [];
+
+        if (this.appliedFilters.length === 0) {
+            return filtered;
         }
+        filtered = filtered.filter(restaurant => {
+            return this.appliedFilters.some(filter => {
+                if (restaurant.filter_ids?.includes(filter)) return true;
+                if (this.assignPriceFilters(restaurant.price_range_id) === filter) return true;
+                if (this.assignTimeFilter(restaurant.delivery_time_minutes) === filter) return true;
+                return false;
+            });
+        });
         return filtered;
-    }, 
+    },
 };
 
 makeAutoObservable(model)
+
 
 /*
 one restaurant object structure:

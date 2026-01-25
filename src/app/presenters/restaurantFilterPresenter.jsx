@@ -10,6 +10,13 @@ export const RestaurantFilter = observer(
             props.model.toggleFilter(filter);
             };
 
+        console.log("All restaurants:", props.model.allRestaurants);
+        console.log("Food filters:", props.model.foodCategoryFilters);
+        console.log("Price filters:", props.model.priceFilters);
+        console.log("Time filters:", props.model.deliveryTimeFilters);
+        console.log("Applied filters:", props.model.appliedFilters);
+        console.log("Filtered restaurants:", props.model.filterRestaurants());
+
         return (
             <div className="page-layout">
                 <SidebarFilterView 

@@ -2,9 +2,10 @@ import "../styles/globals.css";
 import { RestaurantCard } from "../components/restaurantCard.jsx";
 import { SuspenseView } from "./suspenseView.jsx";
 
+
 export function FilterResultsView(props){
     if (!props.allRestaurants) {
-        return <SuspenseView model={reactiveModel}/>;
+        return <SuspenseView model={props.model}/>;
     }
 
     return(

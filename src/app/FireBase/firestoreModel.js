@@ -13,22 +13,19 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
     async function loadInitialData() {
         console.log("Loading initial data..."); //debug
 
+        await reactiveModel.loadRestaurants();
+        const foodFilters = await reactiveModel.loadFoodFilters();
+        reactiveModel.setFilter("priceFilters", reactiveModel.generatePriceFilters());
+            reactiveModel.setFilter("deliveryTimeFilters", reactiveModel.generateDeliveryTimeFilters());
+
         try {
             runInAction(() => {
-                reactiveModel.setAllRestaurants(reactiveModel.allRestaurants);
-                reactiveModel.setFilter(reactiveModel.availableFilters);
+                reactiveModel.setFilter("foodCategoryFilters", foodFilters);
                 reactiveModel.setReady(true);
             });
             console.log("Model ready set to true");
         } catch (error) {
             console.error("Error loading restaurants:", error);
-            runInAction(() => {
-                reactiveModel.setAllRestaurants(reactiveModel.allRestaurants);
-                reactiveModel.setFilter("foodCategoryFilters", reactiveModel.foodCategoryFilters);
-                reactiveModel.setFilter("priceFilters", reactiveModel.priceFilters);
-                reactiveModel.setFilter("deliveryTimeFilters", reactiveModel.deliveryTimeFilters);
-                reactiveModel.setReady(true);
-            });
         }
     }
 
@@ -54,7 +51,7 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
     }
 
     function checkModelPropertiesACB() {
-        return [reactiveModel.ready];
+    return [reactiveModel.appliedFilters.length, reactiveModel.allRestaurants.length];
     }
 
     async function giveDataToFirebaseACB() {
@@ -64,7 +61,11 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
             const docReference = doc(db, COLLECTION, "SavedData");
             const data = {
                 restaurants: reactiveModel.allRestaurants,
-                filters: reactiveModel.availableFilters,
+                filters: {
+                    foodCategoryFilters: reactiveModel.foodCategoryFilters,
+                    priceFilters: reactiveModel.priceFilters,
+                    deliveryTimeFilters: reactiveModel.deliveryTimeFilters
+                }
             };
             await setDoc(docReference, data);
             console.log("Data saved to firebase");
