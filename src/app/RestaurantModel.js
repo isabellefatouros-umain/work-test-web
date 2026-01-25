@@ -1,6 +1,6 @@
 import { resolvePromise } from "./resolvePromise";
-import { getRestaurantsApi, getFiltersApi, getIsOpenApi } from "./api/restaurantSource.js";
-import { makeAutoObservable } from "mobx";
+import { getRestaurantsApi, getFoodFiltersApi, getPriceRangeApi, getIsOpenApi } from "./api/restaurantSource.js";
+import { makeAutoObservable, runInAction } from "mobx";
 
 export const model = {
     ready: false,
@@ -17,17 +17,24 @@ export const model = {
 
     setAllRestaurants(restaurants){
         this.allRestaurants = restaurants;
+        this.filterResultsPromiseState.data = restaurants;
     },
 
     async loadRestaurants() {
         const restaurants = getRestaurantsApi();
-        console.log("Restaurants from Api:", restaurants); //debug
+        console.log("Restaurants from Api:", restaurants);
         resolvePromise(restaurants, this.filterResultsPromiseState);
         try {
             const data = await restaurants;
-            this.setAllRestaurants(data);
+            runInAction(() => {
+                this.allRestaurants = data;
+                this.filterResultsPromiseState.data = data;
+            });
         } catch (error) {
             console.error("Error loading restaurants:", error);
+            runInAction(() => {
+                this.filterResultsPromiseState.error = error;
+            });
         }
     },
 
@@ -41,7 +48,7 @@ export const model = {
 
 
     async loadFoodFilters() {
-        const foodFilters = getFiltersApi();
+        const foodFilters = getFoodFiltersApi();
         console.log("Fetched food filters:", foodFilters); //debug
         return foodFilters;
     },
@@ -58,36 +65,40 @@ export const model = {
         }
     },
 
-    assignPriceFilters(restaurantPrice) {
-         if (restaurantPrice <= 100) {
-            return "$";
-        } else if (restaurantPrice <= 200) {
-            return "$$";
-        } else if (restaurantPrice <= 300) {
-            return "$$$";
-        } else {
-            return "$$$$";
-        }
+    generateDeliveryTimeFilters() {
+        const allTimeRanges = [
+            { id: "0-10 min", name: "0-10 min" },
+            { id: "10-30 min", name: "10-30 min" },
+            { id: "30-60 min", name: "30-60 min" },
+            { id: "1+ hour", name: "1+ hour" }
+        ];
+        
+        return allTimeRanges;
     },
 
-    generatePriceFilters() {
-        const priceSet = new Set();
+    async loadPriceFilters(restaurantPrice) {
+        const priceRangeIds = new Set();
         this.allRestaurants.forEach(restaurant => {
             if (restaurant.price_range_id) {
-                priceSet.add(restaurant.price_range_id);
+                priceRangeIds.add(restaurant.price_range_id);
             }
         });
-        return Array.from(priceSet).sort();
-    },
 
-    generateDeliveryTimeFilters() {
-        const timeSet = new Set();
-        this.allRestaurants.forEach(restaurant => {
-            const timeFilter = this.assignTimeFilter(restaurant.delivery_time_minutes);
-            timeSet.add(timeFilter);
+        const pricePromises = Array.from(priceRangeIds).map(async (priceId) => {
+            try {
+                const priceData = await getPriceRangeApi(priceId);
+                console.log("price range from Api:", priceData);
+                return {
+                    id: priceId,
+                    range: priceData.range
+                };
+            } catch (error) {
+                console.error(`Error loading price range ${priceId}:`, error);
+                return null;
+            }
         });
-        const order = ["0-10 min", "10-30 min", "30-60 min", "1+ hour"];
-        return Array.from(timeSet).sort((a, b) => order.indexOf(a) - order.indexOf(b));
+        const priceFilters = await Promise.all(pricePromises);
+        return priceFilters.filter(filter => filter !== null);
     },
 
     assignImgAsset(restaurantImgLink) {
@@ -132,8 +143,8 @@ export const model = {
         }
     },
 
-    filterRestaurants() {
-        let filtered = this.allRestaurants || [];
+    get filterRestaurants() {
+        let filtered = this.allRestaurants;
 
         if (this.appliedFilters.length === 0) {
             return filtered;
@@ -141,7 +152,7 @@ export const model = {
         filtered = filtered.filter(restaurant => {
             return this.appliedFilters.some(filter => {
                 if (restaurant.filter_ids?.includes(filter)) return true;
-                if (this.assignPriceFilters(restaurant.price_range_id) === filter) return true;
+                if (restaurant.price_range_id === filter) return true;
                 if (this.assignTimeFilter(restaurant.delivery_time_minutes) === filter) return true;
                 return false;
             });

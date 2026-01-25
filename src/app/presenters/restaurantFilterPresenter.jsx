@@ -11,11 +11,7 @@ export const RestaurantFilter = observer(
             };
 
         console.log("All restaurants:", props.model.allRestaurants);
-        console.log("Food filters:", props.model.foodCategoryFilters);
-        console.log("Price filters:", props.model.priceFilters);
-        console.log("Time filters:", props.model.deliveryTimeFilters);
-        console.log("Applied filters:", props.model.appliedFilters);
-        console.log("Filtered restaurants:", props.model.filterRestaurants());
+        console.log("All price filters:", props.model.priceFilters);
 
         return (
             <div className="page-layout">
@@ -36,9 +32,9 @@ export const RestaurantFilter = observer(
                     <div className="results-layout">
                         {props.model.filterResultsPromiseState.data? (
                             <FilterResultsView 
-                                restaurants={props.model.filterRestaurants()}
+                                allRestaurants={props.model.filterRestaurants}
                             />
-                        ) : (
+                        ):(
                             <SuspenseView 
                                 promise={props.model.filterResultsPromiseState.promise}
                                 error={props.model.filterResultsPromiseState.error}

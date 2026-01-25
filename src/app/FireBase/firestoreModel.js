@@ -13,14 +13,20 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
     async function loadInitialData() {
         console.log("Loading initial data..."); //debug
 
-        await reactiveModel.loadRestaurants();
-        const foodFilters = await reactiveModel.loadFoodFilters();
-        reactiveModel.setFilter("priceFilters", reactiveModel.generatePriceFilters());
-            reactiveModel.setFilter("deliveryTimeFilters", reactiveModel.generateDeliveryTimeFilters());
-
         try {
+            await reactiveModel.loadRestaurants();
+            const foodFilters = await reactiveModel.loadFoodFilters();
+            const priceFilters = await reactiveModel.loadPriceFilters();
+            const deliveryTimeFilters = reactiveModel.generateDeliveryTimeFilters();
+
+            console.log("Food filters loaded:", foodFilters.length); // Debug
+            console.log("Price filters loaded:", priceFilters.length);
+            console.log("Delivery time filters generated:", deliveryTimeFilters);
+
             runInAction(() => {
                 reactiveModel.setFilter("foodCategoryFilters", foodFilters);
+                reactiveModel.setFilter("priceFilters", priceFilters);
+                reactiveModel.setFilter("deliveryTimeFilters", reactiveModel.generateDeliveryTimeFilters());
                 reactiveModel.setReady(true);
             });
             console.log("Model ready set to true");
@@ -51,7 +57,7 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
     }
 
     function checkModelPropertiesACB() {
-    return [reactiveModel.appliedFilters.length, reactiveModel.allRestaurants.length];
+        return [reactiveModel.allRestaurants.length, reactiveModel.foodCategoryFilters.length, reactiveModel.priceFilters.length,reactiveModel.deliveryTimeFilters.length];
     }
 
     async function giveDataToFirebaseACB() {

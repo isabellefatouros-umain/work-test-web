@@ -12,18 +12,22 @@ export function resolvePromise(prms, promiseState){
 
     function saveDataACB(promiseResult){
         console.log(promiseResult);
-        if(promiseState.promise === prms){
-            promiseState.data = promiseResult;
-        };
+        runInAction(() => {
+            if(promiseState.promise === prms){
+                promiseState.data = promiseResult;
+            };
+        });
     };
 
     function errorACB(promise){
         console.log(promise);
         console.log(prms);
         console.log(promiseState);
-        if(promiseState.promise===prms){
-            promiseState.error = promise;
-        };
+        runInAction(() => {
+            if(promiseState.promise===prms){
+                promiseState.error = promise;
+            };
+         });
     };
 
     if(prms){

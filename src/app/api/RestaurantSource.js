@@ -16,7 +16,7 @@ export function getRestaurantsApi(){
     return fetch(`${ API_URL }`+`/restaurants`).then(gotResponseACB).then(getResultsACB);
 };
 
-export function getFiltersApi(){
+export function getFoodFiltersApi(){
     function gotResponseACB(response){
         if (response.status === 200){ 
             return response.json();
@@ -30,6 +30,22 @@ export function getFiltersApi(){
         return json.filters || [];
     };
     return fetch(`${ API_URL }`+`/filter`).then(gotResponseACB).then(getResultsACB);
+};
+
+export function getPriceRangeApi(id){
+    function gotResponseACB(response){
+        if (response.status === 200){ 
+            return response.json();
+        } else {
+            throw new Error(`API returned status ${response.status}`);
+        };
+    };
+
+    function getResultsACB(json){
+        console.log("Full API price range response:", json);
+        return json || [];
+    };
+    return fetch(`${ API_URL }`+`/price-range/${id}`).then(gotResponseACB).then(getResultsACB);
 };
 
 export function getIsOpenApi(id){
