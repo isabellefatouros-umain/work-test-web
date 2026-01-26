@@ -101,13 +101,6 @@ export const model = {
         return priceFilters.filter(filter => filter !== null);
     },
 
-    assignImgAsset(restaurantImgLink) {
-        const keywords = ["hamburgers", "pizza", "taco", "breakfast", "coffee", "fries", "mexican"];
-        const match = keywords.find(keyword => restaurantImgLink.includes(keyword));
-        return match? `${match}.png`: "default.png";
-    },
-
-
     async loadIfOpenFilter(id) {
         const Is_open = getIsOpenApi(id);
         console.log("Fetched if open", Is_open); //debug

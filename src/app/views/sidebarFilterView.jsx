@@ -16,6 +16,7 @@ export function SidebarFilterView(props){
             <div className="sidebar-filter-content">
                 <div className="filter-food-category sidebar-filter-item">
                     <h3 className="filter-subcategory-title">Food Category</h3>
+                    <div className="sidebar-filter-item">
                     {(props.foodCategoryFilters || []).map(filter => (
                     <button key={filter.id}
                         className={"filter-pill " + (props.activeFilters.includes(filter.id) ? "active" : "")}
@@ -23,10 +24,12 @@ export function SidebarFilterView(props){
                     >
                         {filter.name}
                     </button>))}
+                    </div>
                 </div>
 
                 <div className="filter-delivery-time sidebar-filter-item">
                     <h3 className="filter-subcategory-title">Delivery Time</h3>
+                    <div className="sidebar-filter-item">
                     {(props.deliveryTimeFilters || []).map(filter => (
                     <button key={filter.id}
                         className={"filter-pill " + (props.activeFilters.includes(filter.id) ? "active" : "")}
@@ -34,10 +37,12 @@ export function SidebarFilterView(props){
                     >
                         {filter.name}
                     </button>))}
+                    </div>
                 </div>
 
                 <div className="filter-price-range sidebar-filter-item">
                     <h3 className="filter-subcategory-title">Price Range</h3>
+                    <div className="sidebar-filter-item">
                     {(props.priceFilters || []).map(filter => (
                     <button key={filter.id}
                         className={"filter-pill " + (props.activeFilters.includes(filter.id) ? "active" : "")}
@@ -45,6 +50,7 @@ export function SidebarFilterView(props){
                     >
                         {filter.range}
                     </button>))}
+                    </div>
                 </div>
             </div>
         </div>
