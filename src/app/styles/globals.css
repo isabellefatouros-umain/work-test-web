@@ -47,15 +47,25 @@ body {
 .topbar-filter-cards {
   display: inline-flex;
   gap: 10px;
-  overflow-x: auto;
 }
 
-.topbar-filter-card {
+.filter-card-wrapper {
+  display: inline-flex;
+  gap: 8px;
+  position: relative;
+}
+
+.filter-card {
   width: 160px;
   height: 80px;
   border-radius: 8px;
   border: 0.6px solid var(--stroke, rgba(0, 0, 0, 0.10));
   background: var(--white, #FFF);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  padding: 12px;
 
   /* basic shadow */
   box-shadow: -98px 56px 32px 0 rgba(0, 0, 0, 0.00),
@@ -65,7 +75,7 @@ body {
   -4px 2px 10px 0 rgba(0, 0, 0, 0.01);
 }
 
-.topbar-filter-label {
+.filter-text {
   color: var(--black, #000);
   font-feature-settings: 'liga' off, 'clig' off;
   font-size: 14px;
@@ -73,17 +83,27 @@ body {
   font-weight: 400;
   line-height: 100%; /* 14px */
   letter-spacing: -0.5px;
+  position: relative;
 }
 
-.topbar-filter-img {
+.filter-image-container {
+  width: 56px;
+  height: 56px;
+  position: absolute;
+  right: 20px;
+  top: 0px;
+}
+
+.filter-image {
   width: 80px;
   height: 80px;
+  object-fit: cover;
 }
 
-.topbar-filter-card.active {
-  background: black;
+.filter-card.active {
+  background: rgb(121, 121, 121);
   color: white;
-  border-color: black;
+  border-color: rgb(121, 121, 121);
 }
 
 
@@ -148,7 +168,6 @@ body {
   gap: 8px;
 }
 
-/* Pills */
 .filter-pill {
   padding: 6px 14px;
   border-radius: 999px;
@@ -163,11 +182,10 @@ body {
   background: #f5f5f5;
 }
 
-/* Active */
 .filter-pill.active {
-  background: black;
+  background: rgb(121, 121, 121);
   color: white;
-  border-color: black;
+  border-color: rgb(121, 121, 121);
 }
 
 
@@ -180,7 +198,6 @@ body {
   gap: 17px;
   gap: 24px;
 }
-
 
 .results-title {
   color: var(--black, #000);
@@ -203,6 +220,7 @@ body {
 /* RestaurantCard component */
 .restaurant-card {
   display: flex;
+  position: relative;
   width: 327px;
   height: 202px;
   padding: 16px;
@@ -213,6 +231,7 @@ body {
   border-radius: 8px;
   border: 0.6px solid var(--stroke, rgba(0, 0, 0, 0.10));
   background: var(--white, #FFF);
+  overflow: hidden;
 
   /* basic shadow */
   box-shadow: -98px 56px 32px 0 rgba(0, 0, 0, 0.00),
@@ -230,6 +249,8 @@ body {
   font-weight: 400;
   line-height: 100%; /* 12px */
   letter-spacing: -0.5px;
+  position: relative;
+  z-index: 1;
 }
 
 .restaurant-name {
@@ -241,9 +262,11 @@ body {
   font-weight: 400;
   line-height: 100%; /* 24px */
   letter-spacing: -0.5px;
+  position: relative;
+  z-index: 1;
 }
 
-.restaurant-open {
+.restaurant-text-container {
   display: flex;
   padding: 8px 12px 8px 10px;
   justify-content: center;
@@ -261,3 +284,11 @@ body {
   -4px 2px 10px 0 rgba(0, 0, 0, 0.01);
 }
 
+.restaurant-image {
+  width: 140px;
+  height: 140px;
+  position: absolute;
+  right: -30px;
+  top: -30px;
+  object-fit: cover;
+}

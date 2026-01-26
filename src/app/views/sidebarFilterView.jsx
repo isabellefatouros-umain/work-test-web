@@ -5,9 +5,8 @@ export function SidebarFilterView(props){
         return null;
     }
 
-    console.log("deliveryTimeFilters:", props.deliveryTimeFilters);
-    console.log("priceFilters:", props.priceFilters);
-
+    console.log("deliveryTimeFilters:", props.deliveryTimeFilters); //debug
+    console.log("priceFilters:", props.priceFilters); //debug
 
     return(
         <div className="sidebar-filter-parent">

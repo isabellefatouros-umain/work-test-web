@@ -1,5 +1,5 @@
 import {model} from "./RestaurantModel";
-import { observable, configure, reaction } from "mobx";
+import { observable, configure } from "mobx";
 
 export const reactiveModel= observable(model);
 configure({ enforceActions: "always" });

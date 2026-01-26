@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
           </svg>
         </header>
 
-        <main style={{ padding: '0 1rem' }}>
+        <main style={{ padding: '01rem' }}>
           {children}
         </main>
       </body>

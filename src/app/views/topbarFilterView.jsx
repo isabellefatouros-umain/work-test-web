@@ -1,3 +1,4 @@
+import { FilterCard } from "../components/filterCard";
 import "../styles/globals.css";
 
 export function TopbarFilterView(props){
@@ -9,13 +10,7 @@ export function TopbarFilterView(props){
         <div className="topbar-filter-parent">
             <div className="topbar-filter-cards">
                 {(props.foodCategoryFilters || []).map(filter => (
-                    <button
-                        key={filter.id}
-                        className={"topbar-filter-card " + (props.activeFilters.includes(filter.id) ? "active" : "")}
-                        onClick={() => props.onFilterClick(filter.id)}
-                    >
-                        <span>{filter.name}</span>
-                    </button>
+                    <FilterCard key={filter.id} filter={filter} props={props} />
                 ))}
             </div>
         </div>

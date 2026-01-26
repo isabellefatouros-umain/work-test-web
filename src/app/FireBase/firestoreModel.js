@@ -19,7 +19,7 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
             const priceFilters = await reactiveModel.loadPriceFilters();
             const deliveryTimeFilters = reactiveModel.generateDeliveryTimeFilters();
 
-            console.log("Food filters loaded:", foodFilters.length); // Debug
+            console.log("Food filters loaded:", foodFilters.length); //debug
             console.log("Price filters loaded:", priceFilters.length);
             console.log("Delivery time filters generated:", deliveryTimeFilters);
 
@@ -29,7 +29,7 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
                 reactiveModel.setFilter("deliveryTimeFilters", reactiveModel.generateDeliveryTimeFilters());
                 reactiveModel.setReady(true);
             });
-            console.log("Model ready set to true");
+            console.log("Model ready set to true"); //debug
         } catch (error) {
             console.error("Error loading restaurants:", error);
         }
@@ -47,7 +47,7 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
             reactiveModel.setFilter("priceFilters", data.filters.priceFilters);
             reactiveModel.setFilter("foodCategoryFilters", data.filters.foodCategoryFilters);
             reactiveModel.setReady(true);
-            console.log("Model ready set to true (from firebase)");
+            console.log("Model ready set to true (from firebase)"); //debug
         }});
     }
 
@@ -74,7 +74,7 @@ export async function connectToPersistence(reactiveModel, watcherFunction) {
                 }
             };
             await setDoc(docReference, data);
-            console.log("Data saved to firebase");
+            console.log("Data saved to firebase"); //debug
         } catch (error) {
             console.log("Error saving to firebase:", error);
         }

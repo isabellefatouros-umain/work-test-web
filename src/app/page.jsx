@@ -15,13 +15,7 @@ export default function Home() {
     setIsClient(true);
     if (!persistenceInitialized.current) {
       persistenceInitialized.current = true;
-      const disposer = connectToPersistence(reactiveModel, reaction);
-
-      return () => {
-        if (disposer) {
-          disposer();
-        }
-      };
+      connectToPersistence(reactiveModel, reaction);
     }
   }, []);
 

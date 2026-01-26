@@ -1,62 +1,44 @@
-# Hello!
+# Hi this is Isabelle (Issy) Speaking
 
-Welcome to Umain's Work Test! This document contains the following things:
+## Overview
 
-- Intro to the Work Test
-- Technical specifications
-- Requirements
-- API Docs
-- Design
+Welcome to Umain's Work Test, this is what I have been working on this last week, and I have some sort of final product.
 
-## Work Test Intro
+## File Structure
 
-Umain is working on setting up a new and exciting restaurant service: Munchies! For all your restaurant needs!
-We have a design ready and a backend service up and running. Now we only need a web application so that our users can find the right restaurant for them.
+I chose to work based on how we worked in our course in web development and programming, ie, building a model that takes data from an API, writes eventual saved data to Firebase, and then is used in a presenter that sends data to the view, which themselves are dumb, if the user interacts with the view it sends data to the presenter and changes the model. The model also is responsive to the ReactRoot, which in turn leads to Page and then Layout, we also have an mobXReactive model to make the model itself reactive, and a resolvePromise file for API calls and data promises.
 
-## Requirements
+### Overview
 
-### User stories
+               API
+ Page           |
+   |            |
+   v            v
+ReactRoot ---> Modell <-----> Firebase
+                ^
+                |
+                |
+                v
+            Presenter
+                ^
+                |
+                |
+                v
+            Views
 
-- As a user, the first time I open the website, I should see an unfiltered list of all restaurants
-- As a user, I should be able to select a filter from the sidebar or the topbar. When I select a filter, the List View should reflect the new updates
-- As a user, I should be able to select multiple filters
-- As a user, I should be able to deselect a filter by clicking on it. If I deselect any filter(s), the List View should reflect the new updates
+
+## What could be improved on
+
+### Approach
+So I started this project pretty well, getting all of the files and downloading everything neccessary, but then i got stupid and didnt plan my approach any further so i just started doing random stuff in the project, setting up methods and views simultaneously (in different files, but I didn't connect them), and I think this is the biggest reason I got stuck, because i didnt really understand my entire code, just the parts, so I couldnt connect them properly. Then I got frustrated and tried AI for help with debugging and it made it more messy.
+
+Because of this i started doing firebase but apparently forgot to initate a proper database, so my website's load times were immense, I debugged it for like a day or two. Ended up being a combination of that and a chunk load error which came from the fact that localhost isn't specific to IPv4 or IPv6 and it sends out both of them and takes the fastest response, so sometimes the cache on the website made it crash. My dad helped me debug that one (Network Consultant) and we changed it so it always connects to the IPv4.
+
+I ended up redoing the entire model, and building up from that, because I couldn't figure out what went were, and I drew a bunch of stuff on paper which improved my understanding a bit.
+
+### Functionality
+
+I would like the restaurant cards to look more like the figma, but I spent enough time on this project and I'm way more happy with it than a couple of days ago. the functionality is otherwise pretty much 100% (idk what to do with the arrows in the Figma, so I didnt add them), im not sure however about if the is_open works properly, but it could just be that they are all closed.
 
 ### Design
-
-- The web application is implemented with a responsive design, ranging from 375px wide until 1440px wide according to the design in Figma
-- Filters have a visual active state
-
-## Umain's Tech Stack and YOU!
-
-At Umain, our main tech stack consists of React, NextJS and TypeScript.
-For Content Management, we like to use SanityCMS.
-For styling, it is TailwindCSS and/or custom CSS.
-You can choose to host your finished product on any hosting provider, such as Google Firebase or Vercel.
-For version control, we use GitHub for all our projects.
-
-For this Work Test, you can choose any tech stack you are comfortable with.
-
-## API Docs
-
-[API Docs](https://work-test-web-2024-eze6j4scpq-lz.a.run.app/api-docs/)
-
-## Design
-
-You can find the [link to the design here](https://www.figma.com/file/263XJno7ii0uEaarJP9Ydw/Umain-Tech-Case?type=design&node-id=27%3A5682&mode=design&t=BPI3BgkmmHVtTdCb-1).
-There are 2 pages in Figma, called App and Web. App is used for the mobile view. Web is used for the desktop view.
-To get the right fonts, colors, sizes and more, please refer to the design in Figma. You should be able to get this info from the components and styles.
-
-## All done?
-
-:star: Awesome, great job! :star:
-The next thing is that a Umain developer will take a look at your finished web application and your code.
-Here are a few ways to get your project to us:
-
-- You could ZIP your project and send it over
-- Share it from a Cloud solution to Umain (e.g. Google Drive)
-- You could share your repo (if public) so that we can clone and install locally
-
-## Questions?
-
-Don't hesistate to contact us if you have any questions! Please send an email to either:
+    I like the design, its almost 100% similar to what the Figma wants, if i had another day or two i could do more tweaking, but its kind of hard since i dont know the basics of CSS, and have just copied almost all of it from the Figma. I would like to actually be able to write CSS and not just copy it.

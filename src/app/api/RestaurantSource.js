@@ -63,35 +63,3 @@ export function getIsOpenApi(id){
     };
     return fetch(`${ API_URL }`+`/open/${id}`).then(gotResponseACB).then(getResultsACB);
 };
-
-/*
-Restaurant object structure:
-{
-  "id": "string",
-  "name": "string",
-  "rating": "number",
-  "filter_ids": [
-    "string"
-  ],
-  "image_url": "string",
-  "delivery_time_minutes": "number",
-  "price_range_id": "string"
-}
-
-Filter object structure:
-{
-  "filters": [
-    {
-      "id": "string",
-      "name": "string",
-      "image_url": "string"
-    }
-  ]
-}
-
-IsOpen object structure:
-{
-  "restaurant_id": "string",
-  "is_currently_open": "boolean"
-}
-*/
