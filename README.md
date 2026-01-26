@@ -8,25 +8,6 @@ Welcome to Umain's Work Test, this is what I have been working on this last week
 
 I chose to work based on how we worked in our course in web development and programming, ie, building a model that takes data from an API, writes eventual saved data to Firebase, and then is used in a presenter that sends data to the view, which themselves are dumb, if the user interacts with the view it sends data to the presenter and changes the model. The model also is responsive to the ReactRoot, which in turn leads to Page and then Layout, we also have an mobXReactive model to make the model itself reactive, and a resolvePromise file for API calls and data promises.
 
-### Overview
-
-               API
- Page           |
-   |            |
-   v            v
-ReactRoot ---> Modell <-----> Firebase
-                ^
-                |
-                |
-                v
-            Presenter
-                ^
-                |
-                |
-                v
-            Views
-
-
 ## What could be improved on
 
 ### Approach
