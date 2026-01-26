@@ -22,4 +22,4 @@ I ended up redoing the entire model, and building up from that, because I couldn
 I would like the restaurant cards to look more like the figma, but I spent enough time on this project and I'm way more happy with it than a couple of days ago. the functionality is otherwise pretty much 100% (idk what to do with the arrows in the Figma, so I didnt add them), im not sure however about if the is_open works properly, but it could just be that they are all closed.
 
 ### Design
-    I like the design, its almost 100% similar to what the Figma wants, if i had another day or two i could do more tweaking, but its kind of hard since i dont know the basics of CSS, and have just copied almost all of it from the Figma. I would like to actually be able to write CSS and not just copy it.
+I like the design, its almost 100% similar to what the Figma wants, if i had another day or two i could do more tweaking, but its kind of hard since i dont know the basics of CSS, and have just copied almost all of it from the Figma. I would like to actually be able to write CSS and not just copy it.
